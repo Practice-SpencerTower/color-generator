@@ -7,12 +7,13 @@ function App() {
     const [color, setColor] = useState('');
     const [error, setError] = useState('');
     // start with a default value to show what user can expect
-    const [list, setList] = useState('');
+    const [list, setList] = useState([]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
             const colors = new Values(color).all(10);
+            setList(colors);
             console.log(colors);
         } catch (e) {
             setError(true);
@@ -29,7 +30,7 @@ function App() {
                         type="text"
                         value={color}
                         onChange={(e) => setColor(e.target.value)}
-                        placeholder="ffffff"
+                        placeholder="#ffffff"
                         className={`${error ? 'error' : null}`}
                     />
                     <button className="btn" type="submit">
@@ -38,7 +39,10 @@ function App() {
                 </form>
             </section>
             <section className="colors">
-                <h4>list of colors goes here</h4>
+                {list.map((color, idx) => {
+                    console.log(color);
+                    return <SingleColor key={idx} {...color} idx={idx} />;
+                })}
             </section>
         </>
     );
